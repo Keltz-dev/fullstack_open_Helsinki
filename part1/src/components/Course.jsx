@@ -1,6 +1,6 @@
-import Header from "./header";
-import Content from "./content";
-import Total from "./total";
+import Header from "./Header";
+import Content from "./Content";
+import Total from "./Total";
 
 const Course = ({ name, parts }) => {
   const sum = (array) => array.reduce((s, p) => s + p, 0);
