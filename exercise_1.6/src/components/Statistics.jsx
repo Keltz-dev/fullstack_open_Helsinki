@@ -1,3 +1,5 @@
+import StatisticLine from "./StatisticLine";
+
 const Statistics = ({ good, bad, neutral }) => {
   const all = good + bad + neutral;
 
@@ -12,12 +14,13 @@ const Statistics = ({ good, bad, neutral }) => {
     return (
       <>
         <h1>Statistics</h1>
-        <div>good: {good}</div>
-        <div>neutral: {neutral}</div>
-        <div>bad: {bad}</div>
-        <div>all: {all}</div>
-        <div>average: {(good - bad) / all}</div> {/* On a scale of -1 to 1 */}
-        <div>positive: {good / all}</div>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={all} />
+        <StatisticLine text="average" value={(good - bad) / all} />
+        {/* On a scale of -1 to 1 */}
+        <StatisticLine text="positive" value={good / all} />
       </>
     );
   }
