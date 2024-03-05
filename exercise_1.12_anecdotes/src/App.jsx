@@ -12,7 +12,20 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  
+  const defaultZeroObject = (object) => {
+    return new Proxy(object, {
+      get: function (target, name) {
+        return name in target ? target[name] : 0;
+      },
+    });
+  };
+
+
+  const [votes, setVotes] = useState(defaultZeroObject({}));
   const [selected, setSelected] = useState(0);
+
+  console.log(votes);
 
   const generateRandomNumber = () => {
     const rnd = Math.floor(Math.random() * anecdotes.length);
@@ -24,6 +37,15 @@ const App = () => {
       <div>{anecdotes[selected]}</div>
       <button onClick={() => setSelected(generateRandomNumber())}>
         next anecdote
+      </button>
+      <button
+        onClick={() =>
+          setVotes(
+            defaultZeroObject({ ...votes, [selected]: votes[selected] + 1 })
+          )
+        }
+      >
+        vote
       </button>
     </>
   );
