@@ -1,8 +1,5 @@
 import { useState } from "react";
-
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
-);
+import Button from "./components/Button";
 
 const App = () => {
   // save clicks of each button to its own state
@@ -13,8 +10,8 @@ const App = () => {
   const incrementGoodReviews = () => setGood(good + 1);
   const incrementNeutralReviews = () => setNeutral(neutral + 1);
   const incrementBadReviews = () => setBad(bad + 1);
-  const all = () => {
-    const all = good + bad + neutral;
+  const all = good + bad + neutral;
+  const allAsDivider = () => {
     return all === 0 ? 1 : all;
   };
 
@@ -28,9 +25,10 @@ const App = () => {
       <div>good: {good}</div>
       <div>neutral: {neutral}</div>
       <div>bad: {bad}</div>
-      <div>all: {all()}</div>
-      <div>average: {(good - bad) / all()}</div>
-      <div>positive: {good / all()}</div>
+      <div>all: {all}</div>
+      <div>average: {(good - bad) / allAsDivider()}</div>{" "}
+      {/* On a scale of -1 to 1 */}
+      <div>positive: {good / allAsDivider()}</div>
     </div>
   );
 };
