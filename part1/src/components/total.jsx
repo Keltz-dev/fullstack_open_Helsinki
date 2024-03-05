@@ -1,5 +1,9 @@
 const Total = ({ exercisesSum }) => {
-  return <p>Number of exercises {exercisesSum}</p>;
+  return (
+    <p>
+      For a total of <strong>{exercisesSum}</strong> exercises
+    </p>
+  );
 };
 
 export default Total;
