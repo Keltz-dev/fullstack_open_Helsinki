@@ -12,18 +12,7 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-
-  const defaultZeroObject = (object) => {
-    // proxy function we use for initial state to enable 0 as the default value in our votes state object
-    return new Proxy(object, {
-      get: function (target, name) {
-        return name in target ? target[name] : 0;
-      },
-    });
-  };
-
-
-  const [votes, setVotes] = useState(defaultZeroObject({})); // see line 16
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
   const [selected, setSelected] = useState(0);
 
   const generateRandomNumber = () => {
@@ -31,21 +20,24 @@ const App = () => {
     return rnd != selected ? rnd : generateRandomNumber();
   };
 
+  const handleVote = () => {
+    const votesCopy = [...votes];
+    votesCopy[selected] += 1;
+    setVotes(votesCopy);
+  };
+
+  const mostUpvoted = (anecdotes) => anecdotes[votes.indexOf(Math.max(...votes))]
+
   return (
     <>
       <div>{anecdotes[selected]}</div>
+      <div>votes: {votes[selected]}</div>
       <button onClick={() => setSelected(generateRandomNumber())}>
         next anecdote
       </button>
-      <button
-        onClick={() =>
-          setVotes(
-            defaultZeroObject({ ...votes, [selected]: votes[selected] + 1 }) // see line 16
-          )
-        }
-      >
-        vote
-      </button>
+      <button onClick={handleVote}>vote</button>
+      <h1>Most voted for:</h1>
+      <div>{mostUpvoted(anecdotes)}</div>
     </>
   );
 };
