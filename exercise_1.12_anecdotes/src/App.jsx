@@ -12,8 +12,9 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-  
+
   const defaultZeroObject = (object) => {
+    // proxy function we use for initial state to enable 0 as the default value in our votes state object
     return new Proxy(object, {
       get: function (target, name) {
         return name in target ? target[name] : 0;
@@ -22,10 +23,8 @@ const App = () => {
   };
 
 
-  const [votes, setVotes] = useState(defaultZeroObject({}));
+  const [votes, setVotes] = useState(defaultZeroObject({})); // see line 16
   const [selected, setSelected] = useState(0);
-
-  console.log(votes);
 
   const generateRandomNumber = () => {
     const rnd = Math.floor(Math.random() * anecdotes.length);
@@ -41,7 +40,7 @@ const App = () => {
       <button
         onClick={() =>
           setVotes(
-            defaultZeroObject({ ...votes, [selected]: votes[selected] + 1 })
+            defaultZeroObject({ ...votes, [selected]: votes[selected] + 1 }) // see line 16
           )
         }
       >
