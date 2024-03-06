@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Persons from "./components/Persons";
+import Form from "./components/Form";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -46,7 +46,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Persons
+      <Form
         handleSubmit={handleSubmit}
         newName={newName}
         newNumber={newNumber}
