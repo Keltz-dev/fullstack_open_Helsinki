@@ -74,20 +74,24 @@ do you want to change the number to ${newNumber}?`
   return (
     <div>
       <h2>Phonebook</h2>
-      <Form
-        handleSubmit={handleSubmit}
-        newName={newName}
-        newNumber={newNumber}
-        onNameChange={handleChangeWith(setNewName)}
-        onNumberChange={handleChangeWith(setNewNumber)}
-      />
+      <Form handleSubmit={handleSubmit}>
+        <InputField
+          text="name"
+          value={newName}
+          onChange={handleChangeWith(setNewName)}
+        />
+        <InputField
+          text="number"
+          value={newNumber}
+          onChange={handleChangeWith(setNewNumber)}
+        />
+      </Form>
       <h2>Filter</h2>
       <InputField
         text="search"
         value={search}
         onChange={handleChangeWith(setSearch)}
       />
-
       <h2>Numbers</h2>
       <Persons search={search} persons={persons} />
     </div>

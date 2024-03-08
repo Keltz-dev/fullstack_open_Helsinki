@@ -1,16 +1,7 @@
-import InputField from "./InputField";
-
-const Form = ({
-  handleSubmit,
-  newName,
-  newNumber,
-  onNameChange,
-  onNumberChange,
-}) => {
+const Form = ({ handleSubmit, children }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <InputField text="name" value={newName} onChange={onNameChange} />
-      <InputField text="number" value={newNumber} onChange={onNumberChange} />
+      {children}
       <div>
         <button type="submit">add</button>
       </div>
