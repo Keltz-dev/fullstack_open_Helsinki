@@ -1,42 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "./components/Form";
+import Persons from "./components/Persons";
+import InputField from "./components/InputField";
+import personsService from "./services/persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [newId, setNewId] = useState(persons.length + 1);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    personsService
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons));
+  }, []);
 
   const handleChangeWith = (fn) => (e) => fn(e.target.value);
 
-  const resetFormAndIncrementId = () => {
+  const nameInPhonebook = () => persons.find(({ name }) => name === newName);
+
+  const resetForm = () => {
     setNewName("");
     setNewNumber("");
-    setNewId(newId + 1);
+  };
+
+  const createPerson = () => {
+    personsService
+      .create({
+        name: newName,
+        number: newNumber,
+      })
+      .then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        resetForm();
+      })
+      .catch((error) => alert(error));
+  };
+
+  const updatePerson = (previousContact) => {
+    personsService
+      .update(previousContact.id, {
+        name: newName,
+        number: newNumber,
+      })
+      .then((updatedPerson) => {
+        setPersons(
+          persons.map((p) => (p.id === previousContact.id ? updatedPerson : p))
+        );
+        resetForm();
+      })
+      .catch((error) => alert(error));
+  };
+
+  const updatePersonConfirmed = (previousContact) => {
+    return window.confirm(
+      `${newName} is already in your phonebook \
+with the number ${previousContact.number}, \
+do you want to change the number to ${newNumber}?`
+    );
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const numberNotInPhonebook = !persons.find(
-      ({ number }) => number === newNumber
-    );
-    if (numberNotInPhonebook) {
-      setPersons(
-        persons.concat({
-          name: newName,
-          number: newNumber,
-          id: newId,
-        })
-      );
-      resetFormAndIncrementId();
-    } else {
-      alert("Hammwa");
+    const previousContact = nameInPhonebook();
+    if (!previousContact) {
+      createPerson();
+    } else if (updatePersonConfirmed(previousContact)) {
+      updatePerson(previousContact);
     }
   };
 
@@ -50,21 +81,18 @@ const App = () => {
         handleSubmit={handleSubmit}
         newName={newName}
         newNumber={newNumber}
-        handleChangeWithSetNewName={handleChangeWith(setNewName)}
-        handleChangeWithSetNewNumber={handleChangeWith(setNewNumber)}
+        onNameChange={handleChangeWith(setNewName)}
+        onNumberChange={handleChangeWith(setNewNumber)}
       />
       <h2>Filter</h2>
-      <input value={search} onChange={handleChangeWith(setSearch)} />
+      <InputField
+        text="search"
+        value={search}
+        onChange={handleChangeWith(setSearch)}
+      />
 
       <h2>Numbers</h2>
-      <ul>
-        {personsStartingWith(search).map(({ name, number, id }) => (
-          <li key={id}>
-            <p>{name}</p>
-            <p>{number}</p>
-          </li>
-        ))}
-      </ul>
+      <Persons search={search} personsStartingWith={personsStartingWith} />
     </div>
   );
 };

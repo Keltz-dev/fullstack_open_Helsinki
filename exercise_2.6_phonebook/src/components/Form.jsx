@@ -1,20 +1,16 @@
+import InputField from "./InputField";
+
 const Form = ({
   handleSubmit,
   newName,
   newNumber,
-  handleChangeWithSetNewName,
-  handleChangeWithSetNewNumber,
+  onNameChange,
+  onNumberChange,
 }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        name:
-        <input value={newName} onChange={handleChangeWithSetNewName} />
-      </div>
-      <div>
-        number:
-        <input value={newNumber} onChange={handleChangeWithSetNewNumber} />
-      </div>
+      <InputField text="name" value={newName} onChange={onNameChange} />
+      <InputField text="number" value={newNumber} onChange={onNumberChange} />
       <div>
         <button type="submit">add</button>
       </div>
