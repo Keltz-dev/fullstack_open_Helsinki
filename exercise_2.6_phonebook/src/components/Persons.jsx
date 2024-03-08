@@ -1,6 +1,10 @@
 import Person from "./Person";
 
-const Persons = ({ personsStartingWith, search }) => {
+const Persons = ({ persons, search }) => {
+  const personsStartingWith = (query) =>
+    persons.filter(({ name }) => name.startsWith(query));
+
+
   return (
     <ul>
       {personsStartingWith(search).map(({ name, number, id }) => (

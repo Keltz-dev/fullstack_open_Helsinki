@@ -71,9 +71,6 @@ do you want to change the number to ${newNumber}?`
     }
   };
 
-  const personsStartingWith = (query) =>
-    persons.filter(({ name }) => name.startsWith(query));
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -92,7 +89,7 @@ do you want to change the number to ${newNumber}?`
       />
 
       <h2>Numbers</h2>
-      <Persons search={search} personsStartingWith={personsStartingWith} />
+      <Persons search={search} persons={persons} />
     </div>
   );
 };
